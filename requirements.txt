@@ -1,0 +1,15 @@
+flask
+pandas
+openpyxl
+langchain
+langchain-core
+langchain-community
+langchain-ollama
+langchain-text-splitters
+langchain-chroma
+chromadb
+pypdf
+pdfplumber
+docx2txt
+unstructured
+python-dotenv

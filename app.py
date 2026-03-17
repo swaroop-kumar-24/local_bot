@@ -35,9 +35,9 @@ TASK:
 - Present each record as a clean, readable summary listing every field and its value.
 - Do not skip any fields. Do not add anything not in the records.
 - Do not say "I cannot find" or "not in the records" — the records ARE the answer.
-# - Format each record like this:
-#     Field Name: value
-#     Field Name: value
+- Format each record like this:
+    Field Name: value
+    Field Name: value
 
 RECORDS:
 {records}
@@ -146,7 +146,12 @@ def new_chat():
 
 # ─── Flask app ────────────────────────────────────────────────────────────────
 
-app = Flask(__name__)
+import os as _os
+app = Flask(__name__,
+    template_folder=_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'templates'),
+    static_folder=_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'assets'),
+    static_url_path='/assets')
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.secret_key = secrets.token_hex(16)
 
 
@@ -201,6 +206,44 @@ def chat():
         "answer":     answer,
         "hits":       len(hits),
         "debug":      debug_info,
+        "chat_title": _chats[chat_id]["title"]
+    })
+
+
+
+@app.route("/chat/direct", methods=["POST"])
+def chat_direct():
+    """Return raw JSON records without LLM — instant, zero hallucination."""
+    data    = request.json
+    query   = data.get("message","").strip()
+    chat_id = session.get("active_chat")
+
+    if not query or not chat_id or chat_id not in _chats:
+        return jsonify({"error": "Invalid request"}), 400
+
+    history  = _chats[chat_id]["history"]
+    search_q = enrich_query(query, history)
+    hits     = search(search_q)
+
+    if not hits:
+        answer = "No matching record found."
+    else:
+        lines = []
+        for i, (score, fname, rec) in enumerate(hits, 1):
+            fields = "\n".join(f"  {k}: {v}" for k, v in rec.items() if str(v).strip())
+            lines.append(f"Record {i}:\n{fields}")
+        answer = "\n\n".join(lines)
+
+    history.append((query, answer))
+    if len(history) > MAX_HISTORY:
+        _chats[chat_id]["history"] = history[-MAX_HISTORY:]
+    if len(history) == 1:
+        _chats[chat_id]["title"] = query[:35] + ("…" if len(query) > 35 else "")
+
+    return jsonify({
+        "answer":     answer,
+        "hits":       len(hits),
+        "debug":      None,
         "chat_title": _chats[chat_id]["title"]
     })
 
@@ -311,6 +354,3 @@ if __name__ == "__main__":
     print(f"[INFO] Starting RAG UI at http://localhost:5000")
     webbrowser.open("http://localhost:5000")
     app.run(debug=False, port=5000)
-
-app.config["TEMPLATES_AUTO_RELOAD"] = True
-app.run(debug=False, port=5000)

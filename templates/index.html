@@ -7,19 +7,10 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --bg:        #0f0e11;
-  --s1:        #161419;
-  --s2:        #1d1b21;
-  --border:    #2d2a33;
-  --accent:    #e8c547;
-  --accent2:   #7c5cbf;
-  --green:     #4ade80;
-  --red:       #f87171;
-  --text:      #ede9f5;
-  --muted:     #6b6578;
-  --mono:      'DM Mono', monospace;
-  --serif:     'Fraunces', serif;
-  --r:         12px;
+  --bg:#0f0e11;--s1:#161419;--s2:#1d1b21;--border:#2d2a33;
+  --accent:#e8c547;--accent2:#7c5cbf;--green:#4ade80;--red:#f87171;
+  --text:#ede9f5;--muted:#6b6578;
+  --mono:'DM Mono',monospace;--serif:'Fraunces',serif;--r:12px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
@@ -27,22 +18,20 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);display:gri
 
 /* ── Sidebar ── */
 .sidebar{background:var(--s1);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
-
 .sidebar-head{padding:20px 16px 12px;border-bottom:1px solid var(--border)}
 .brand{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.brand-icon{width: 34px;;height:34px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
-.brand-name{font-size:20px;font-weight:1400;letter-spacing:-.3px}
+.brand-icon{width:34px;height:34px;border-radius:9px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.brand-icon img{width:34px;height:34px;object-fit:cover}
+.brand-icon-fallback{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.brand-name{font-size:16px;font-weight:700;letter-spacing:-.3px}
 .brand-sub{font-size:10px;color:var(--muted);margin-top:1px;font-family:var(--mono)}
-
 .new-chat-btn{width:100%;padding:9px;background:var(--accent);color:#000;border:none;border-radius:8px;font-family:var(--serif);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:opacity .15s}
 .new-chat-btn:hover{opacity:.85}
 
-/* chat list */
 .chat-list{flex:1;overflow-y:auto;padding:8px}
 .chat-list::-webkit-scrollbar{width:3px}
 .chat-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-
-.chat-item{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:8px;cursor:pointer;transition:background .12s;margin-bottom:2px;group:true}
+.chat-item{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:8px;cursor:pointer;transition:background .12s;margin-bottom:2px}
 .chat-item:hover{background:var(--s2)}
 .chat-item.active{background:var(--s2);border:1px solid var(--border)}
 .chat-item-icon{font-size:13px;flex-shrink:0;opacity:.6}
@@ -52,23 +41,18 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);display:gri
 .chat-del{opacity:0;background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;padding:2px 4px;border-radius:4px;transition:opacity .12s;flex-shrink:0}
 .chat-item:hover .chat-del{opacity:1}
 
-/* kb section */
 .sidebar-kb{border-top:1px solid var(--border);padding:12px 16px}
 .section-label{font-size:9px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-family:var(--mono)}
-
 .kb-file-list{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;max-height:140px;overflow-y:auto}
 .kb-file{display:flex;align-items:center;gap:6px;padding:6px 8px;background:var(--s2);border:1px solid var(--border);border-radius:7px;font-size:11px;font-family:var(--mono)}
 .kb-file-name{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--accent)}
 .kb-file-count{color:var(--muted);flex-shrink:0}
 .kb-file-del{background:none;border:none;color:var(--red);cursor:pointer;font-size:12px;opacity:.5;transition:opacity .12s;flex-shrink:0}
 .kb-file-del:hover{opacity:1}
-
-.kb-upload-row{display:flex;gap:6px}
 .kb-upload-input{display:none}
-.kb-add-btn{flex:1;padding:7px;background:var(--s2);border:1px dashed var(--border);border-radius:7px;color:var(--muted);font-family:var(--mono);font-size:11px;cursor:pointer;text-align:center;transition:all .15s}
+.kb-add-btn{width:100%;padding:7px;background:var(--s2);border:1px dashed var(--border);border-radius:7px;color:var(--muted);font-family:var(--mono);font-size:11px;cursor:pointer;text-align:center;transition:all .15s}
 .kb-add-btn:hover{border-color:var(--accent);color:var(--accent)}
 
-/* status bar */
 .status-bar{display:flex;align-items:center;gap:6px;padding:10px 16px;border-top:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--muted)}
 .status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green);flex-shrink:0}
 .status-dot.busy{background:var(--accent);box-shadow:0 0 5px var(--accent);animation:blink 1s infinite}
@@ -76,25 +60,19 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);display:gri
 
 /* ── Main ── */
 .main{display:flex;flex-direction:column;overflow:hidden}
-
 .topbar{padding:14px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .topbar-left h1{font-size:17px;font-weight:700;font-style:italic}
 .topbar-left p{font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:2px}
 .topbar-right{display:flex;align-items:center;gap:10px}
-
-/* debug toggle */
-.debug-toggle{display:flex;align-items:center;gap:7px;padding:6px 12px;background:var(--s2);border:1px solid var(--border);border-radius:20px;cursor:pointer;font-family:var(--mono);font-size:11px;color:var(--muted);transition:all .15s;user-select:none}
-.debug-toggle.on{border-color:var(--accent);color:var(--accent)}
-.toggle-dot{width:8px;height:8px;border-radius:50%;background:var(--muted);transition:background .15s}
-.debug-toggle.on .toggle-dot{background:var(--accent);box-shadow:0 0 5px var(--accent)}
-
+.toggle-pill{display:flex;align-items:center;gap:7px;padding:6px 12px;background:var(--s2);border:1px solid var(--border);border-radius:20px;cursor:pointer;font-family:var(--mono);font-size:11px;color:var(--muted);transition:all .15s;user-select:none}
+.toggle-pill.on{border-color:var(--accent);color:var(--accent)}
+.toggle-pill .dot{width:8px;height:8px;border-radius:50%;background:var(--muted);transition:background .15s}
+.toggle-pill.on .dot{background:var(--accent);box-shadow:0 0 5px var(--accent)}
 .record-badge{font-family:var(--mono);font-size:11px;color:var(--muted);background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:5px 12px}
 
-/* messages */
 .messages{flex:1;overflow-y:auto;padding:28px;display:flex;flex-direction:column;gap:18px;scroll-behavior:smooth}
 .messages::-webkit-scrollbar{width:3px}
 .messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-
 .empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--muted);text-align:center}
 .empty-icon{font-size:38px;opacity:.3}
 .empty-title{font-size:20px;font-weight:300;font-style:italic;color:var(--text);opacity:.3}
@@ -107,13 +85,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);display:gri
 .msg-label{font-size:9px;font-family:var(--mono);font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:0 4px}
 .msg-bubble{max-width:74%;padding:13px 17px;border-radius:var(--r);font-size:13.5px;line-height:1.75;white-space:pre-wrap;word-break:break-word}
 .msg.user .msg-bubble{background:#1e1630;border:1px solid #3a2860;border-bottom-right-radius:3px}
-.msg.bot .msg-bubble{background:var(--s1);border:1px solid var(--border);border-bottom-left-radius:3px}
-
+.msg.bot  .msg-bubble{background:var(--s1);border:1px solid var(--border);border-bottom-left-radius:3px}
+.direct-bubble{border-color:#1a3a1a !important;background:#0d1a0d !important;color:#4ade80;font-family:var(--mono);font-size:12px}
 .debug-block{max-width:74%;background:#0d1a0d;border:1px solid #1a3a1a;border-radius:8px;padding:10px 14px;font-family:var(--mono);font-size:10px;color:#4ade80;white-space:pre-wrap;word-break:break-all}
+.hits-badge{font-size:10px;font-family:var(--mono);padding:2px 8px;border-radius:10px;width:fit-content}
+.hits-badge.llm{color:var(--accent);background:#1a1500;border:1px solid #3a3000}
+.hits-badge.direct{color:#4ade80;background:#0d1a0d;border:1px solid #1a3a1a}
 
-.hits-badge{font-size:10px;font-family:var(--mono);color:var(--accent);padding:2px 8px;background:#1a1500;border:1px solid #3a3000;border-radius:10px;width:fit-content}
-
-/* thinking */
 .thinking{display:flex;align-items:center;gap:10px;padding:13px 17px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r);border-bottom-left-radius:3px;width:fit-content;font-family:var(--mono);font-size:12px;color:var(--muted)}
 .dots{display:flex;gap:3px}
 .dots span{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:bounce .8s infinite}
@@ -121,27 +99,65 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);display:gri
 .dots span:nth-child(3){animation-delay:.3s}
 @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
 
-/* input */
+/* ── Input ── */
 .input-area{padding:18px 28px;border-top:1px solid var(--border);flex-shrink:0}
-.input-box{display:flex;align-items:flex-end;gap:10px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:11px 14px;transition:border-color .15s}
+.input-box{display:flex;align-items:flex-end;gap:8px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:11px 14px;transition:border-color .15s}
 .input-box:focus-within{border-color:var(--accent2)}
 #userInput{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:var(--serif);font-size:14px;resize:none;max-height:100px;line-height:1.6}
 #userInput::placeholder{color:var(--muted)}
+
+/* bypass toggle inside input box */
+.bypass-toggle{display:flex;align-items:center;gap:5px;padding:5px 9px;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-family:var(--mono);font-size:10px;color:var(--muted);background:var(--s2);white-space:nowrap;transition:all .15s;user-select:none;flex-shrink:0}
+.bypass-toggle.on{border-color:#4ade80;color:#4ade80;background:#0d1a0d}
+.bypass-toggle .bdot{width:6px;height:6px;border-radius:50%;background:var(--muted);transition:background .15s;flex-shrink:0}
+.bypass-toggle.on .bdot{background:#4ade80;box-shadow:0 0 4px #4ade80}
+
 .send-btn{width:34px;height:34px;background:var(--accent2);border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-size:15px;transition:opacity .15s}
 .send-btn:hover{opacity:.8}
 .send-btn:disabled{opacity:.3;cursor:not-allowed}
 .input-hint{font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:7px;text-align:center}
+
+/* ── Confirm Modal ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-overlay.show{opacity:1;pointer-events:all}
+.modal{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:28px;width:320px;text-align:center;transform:scale(.95);transition:transform .2s}
+.modal-overlay.show .modal{transform:scale(1)}
+.modal-icon{font-size:28px;margin-bottom:12px}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:6px}
+.modal-sub{font-size:12px;color:var(--muted);font-family:var(--mono);margin-bottom:22px;line-height:1.6}
+.modal-btns{display:flex;gap:10px}
+.modal-btn{flex:1;padding:10px;border:none;border-radius:8px;font-family:var(--serif);font-size:13px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.modal-btn:hover{opacity:.85}
+.modal-btn.cancel{background:var(--s2);border:1px solid var(--border);color:var(--text)}
+.modal-btn.confirm{background:var(--red);color:#fff}
 </style>
 </head>
 <body>
+
+<!-- ── Confirm Modal ─────────────────────────────────────── -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-icon">🗑</div>
+    <div class="modal-title" id="modalTitle">Are you sure?</div>
+    <div class="modal-sub" id="modalSub">This action cannot be undone.</div>
+    <div class="modal-btns">
+      <button class="modal-btn cancel" onclick="modalCancel()">Cancel</button>
+      <button class="modal-btn confirm" onclick="modalConfirm()">Delete</button>
+    </div>
+  </div>
+</div>
 
 <!-- ── Sidebar ─────────────────────────────────────────── -->
 <aside class="sidebar">
   <div class="sidebar-head">
     <div class="brand">
-      <div class="brand-icon">⬡</div>
+      <!-- Brand icon: loads from assets/logo.svg, falls back to emoji -->
+      <div class="brand-icon">
+        <img src="/assets/logo.png" alt="logo"
+             onerror="this.parentElement.innerHTML='<div class=\'brand-icon-fallback\'>⬡</div>'"/>
+      </div>
       <div>
-        <div class="brand-name">Lextria Research</div>
+        <div class="brand-name">RAG Agent</div>
         <div class="brand-sub">{{ model }}</div>
       </div>
     </div>
@@ -153,11 +169,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);display:gri
   <div class="sidebar-kb">
     <div class="section-label">Knowledge Base</div>
     <div class="kb-file-list" id="kbFileList"></div>
-    <div class="kb-upload-row">
-      <input type="file" id="kbFileInput" class="kb-upload-input" accept=".json" onchange="uploadKbFile(this)"/>
-      <div class="kb-add-btn" onclick="document.getElementById('kbFileInput').click()">
-        + Add JSON file
-      </div>
+    <input type="file" id="kbFileInput" class="kb-upload-input" accept=".json" onchange="uploadKbFile(this)"/>
+    <div class="kb-add-btn" onclick="document.getElementById('kbFileInput').click()">
+      + Add JSON file
     </div>
   </div>
 
@@ -176,9 +190,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);display:gri
       <p>JSON Knowledge Base · Local · Private</p>
     </div>
     <div class="topbar-right">
-      <div class="debug-toggle" id="debugToggle" onclick="toggleDebug()">
-        <div class="toggle-dot"></div>
-        <span>Debug</span>
+      <div class="toggle-pill" id="debugToggle" onclick="toggleDebug()">
+        <div class="dot"></div><span>Debug</span>
       </div>
       <div class="record-badge" id="hitsInfo">— records</div>
     </div>
@@ -188,47 +201,81 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);display:gri
     <div class="empty-state" id="emptyState">
       <div class="empty-icon">◈</div>
       <div class="empty-title">Ask your knowledge base</div>
-      <div class="empty-sub">Type a question. Records are searched by exact match — no hallucination.</div>
+      <div class="empty-sub">Exact match search · Toggle bypass to skip LLM · Debug shows raw records</div>
     </div>
   </div>
 
   <div class="input-area">
     <div class="input-box">
-      <textarea id="userInput" rows="1" placeholder="Ask anything — try a code like AR76…"></textarea>
+      <textarea id="userInput" rows="1" placeholder="Ask anything — e.g. AR76…"></textarea>
+      <!-- Bypass LLM toggle inside the input box -->
+      <div class="bypass-toggle" id="bypassToggle" onclick="toggleBypass()" title="Bypass LLM — return raw records instantly">
+        <div class="bdot"></div>
+        <span id="bypassLabel">LLM</span>
+      </div>
       <button class="send-btn" id="sendBtn" onclick="sendMessage()">▶</button>
     </div>
-    <div class="input-hint">Enter to send · Shift+Enter for new line · debug shows raw records</div>
+    <div class="input-hint">Enter to send · Shift+Enter for new line · <span id="modeHint">LLM mode</span></div>
   </div>
 </main>
 
 <script>
-let debugOn    = false;
-let activeCid  = null;
+let debugOn   = false;
+let bypassLLM = false;
+let activeCid = null;
 
-// ── Debug toggle ──────────────────────────────────────────
+// ── Modal ─────────────────────────────────────────────────
+let _modalResolve = null;
+function showModal(title, sub) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalSub').textContent   = sub;
+  document.getElementById('modalOverlay').classList.add('show');
+  return new Promise(res => { _modalResolve = res; });
+}
+function modalConfirm() {
+  document.getElementById('modalOverlay').classList.remove('show');
+  if (_modalResolve) { _modalResolve(true); _modalResolve = null; }
+}
+function modalCancel() {
+  document.getElementById('modalOverlay').classList.remove('show');
+  if (_modalResolve) { _modalResolve(false); _modalResolve = null; }
+}
+// Close on overlay click
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) modalCancel();
+});
+
+// ── Toggles ───────────────────────────────────────────────
 function toggleDebug() {
   debugOn = !debugOn;
-  const el = document.getElementById('debugToggle');
-  el.classList.toggle('on', debugOn);
+  document.getElementById('debugToggle').classList.toggle('on', debugOn);
+}
+
+function toggleBypass() {
+  bypassLLM = !bypassLLM;
+  const el  = document.getElementById('bypassToggle');
+  const lbl = document.getElementById('bypassLabel');
+  const hint = document.getElementById('modeHint');
+  el.classList.toggle('on', bypassLLM);
+  lbl.textContent  = bypassLLM ? 'Direct' : 'LLM';
+  hint.textContent = bypassLLM ? 'Direct mode — raw records, no LLM' : 'LLM mode';
 }
 
 // ── Status ────────────────────────────────────────────────
 function setLoading(on) {
-  document.getElementById('statusDot').className  = 'status-dot' + (on ? ' busy' : '');
-  document.getElementById('statusText').textContent = on ? 'Thinking…' : 'Ready';
+  document.getElementById('statusDot').className    = 'status-dot' + (on ? ' busy' : '');
+  document.getElementById('statusText').textContent = on ? (bypassLLM ? 'Searching…' : 'Thinking…') : 'Ready';
   document.getElementById('sendBtn').disabled = on;
 }
 
-// ── Load chat list ────────────────────────────────────────
+// ── Chat list ─────────────────────────────────────────────
 async function loadChats() {
-  const res   = await fetch('/chats');
-  const chats = await res.json();
+  const chats = await (await fetch('/chats')).json();
   const list  = document.getElementById('chatList');
   list.innerHTML = '';
   chats.forEach(c => {
     const div = document.createElement('div');
     div.className = 'chat-item' + (c.active ? ' active' : '');
-    div.dataset.id = c.id;
     div.innerHTML = `
       <span class="chat-item-icon">💬</span>
       <div class="chat-item-body">
@@ -242,13 +289,12 @@ async function loadChats() {
   });
 }
 
-// ── Load KB files ─────────────────────────────────────────
+// ── KB files ──────────────────────────────────────────────
 async function loadKbFiles() {
-  const res   = await fetch('/kb/files');
-  const files = await res.json();
+  const files = await (await fetch('/kb/files')).json();
   const list  = document.getElementById('kbFileList');
   list.innerHTML = '';
-  if (files.length === 0) {
+  if (!files.length) {
     list.innerHTML = '<div style="font-size:11px;color:var(--muted);font-family:var(--mono)">No files loaded</div>';
     return;
   }
@@ -261,34 +307,29 @@ async function loadKbFiles() {
       <button class="kb-file-del" title="Delete" onclick="deleteKbFile('${f.name}')">✕</button>`;
     list.appendChild(div);
   });
-  // Update record count
-  const total = files.reduce((s,f) => s + f.records, 0);
-  document.getElementById('recordCount').textContent = total + ' records';
+  document.getElementById('recordCount').textContent =
+    files.reduce((s,f) => s+f.records, 0) + ' records';
 }
 
-// ── Upload KB file ────────────────────────────────────────
 async function uploadKbFile(input) {
-  const file = input.files[0];
-  if (!file) return;
-  const fd = new FormData();
-  fd.append('file', file);
-  const res  = await fetch('/kb/upload', {method:'POST', body: fd});
-  const data = await res.json();
+  const file = input.files[0]; if (!file) return;
+  const fd   = new FormData(); fd.append('file', file);
+  const data = await (await fetch('/kb/upload', {method:'POST', body:fd})).json();
   if (data.error) { alert(data.error); return; }
   input.value = '';
   loadKbFiles();
 }
 
 async function deleteKbFile(name) {
-  if (!confirm(`Delete ${name} from knowledge base?`)) return;
+  const ok = await showModal('Delete file?', `Remove "${name}" from the knowledge base?`);
+  if (!ok) return;
   await fetch(`/kb/delete/${encodeURIComponent(name)}`, {method:'POST'});
   loadKbFiles();
 }
 
 // ── Chat management ───────────────────────────────────────
 async function newChat() {
-  const res  = await fetch('/chats/new', {method:'POST'});
-  const data = await res.json();
+  const data = await (await fetch('/chats/new', {method:'POST'})).json();
   activeCid  = data.id;
   clearMessages();
   document.getElementById('chatTitle').textContent = data.title;
@@ -297,12 +338,10 @@ async function newChat() {
 
 async function switchChat(cid) {
   if (cid === activeCid) return;
-  const res  = await fetch(`/chats/${cid}/switch`, {method:'POST'});
-  const data = await res.json();
+  const data = await (await fetch(`/chats/${cid}/switch`, {method:'POST'})).json();
   activeCid  = cid;
   clearMessages();
   document.getElementById('chatTitle').textContent = data.title;
-  // Replay history
   const pairs = data.history;
   for (let i = 0; i < pairs.length; i+=2) {
     if (pairs[i])   appendMsg('user', pairs[i].text);
@@ -313,8 +352,9 @@ async function switchChat(cid) {
 
 async function deleteChat(e, cid) {
   e.stopPropagation();
-  const res  = await fetch(`/chats/${cid}/delete`, {method:'POST'});
-  const data = await res.json();
+  const ok = await showModal('Delete chat?', 'This conversation will be permanently removed.');
+  if (!ok) return;
+  const data = await (await fetch(`/chats/${cid}/delete`, {method:'POST'})).json();
   activeCid  = data.active;
   clearMessages();
   loadChats();
@@ -322,12 +362,12 @@ async function deleteChat(e, cid) {
 
 // ── Messages ──────────────────────────────────────────────
 function clearMessages() {
-  const c = document.getElementById('messages');
-  c.innerHTML = `<div class="empty-state" id="emptyState">
-    <div class="empty-icon">◈</div>
-    <div class="empty-title">Ask your knowledge base</div>
-    <div class="empty-sub">Type a question. Records are searched by exact match.</div>
-  </div>`;
+  document.getElementById('messages').innerHTML = `
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon">◈</div>
+      <div class="empty-title">Ask your knowledge base</div>
+      <div class="empty-sub">Exact match · Toggle bypass · Debug shows records</div>
+    </div>`;
   document.getElementById('hitsInfo').textContent = '— records';
 }
 
@@ -336,13 +376,14 @@ function appendMsg(role, text, extra) {
   const c   = document.getElementById('messages');
   const div = document.createElement('div');
   div.className = `msg ${role}`;
+  const isDirect = extra?.direct;
   div.innerHTML = `
-    <div class="msg-label">${role === 'user' ? 'You' : 'Agent'}</div>
-    <div class="msg-bubble">${text.replace(/</g,'&lt;')}</div>`;
+    <div class="msg-label">${role==='user' ? 'You' : (isDirect ? 'Direct' : 'Agent')}</div>
+    <div class="msg-bubble${isDirect ? ' direct-bubble' : ''}">${text.replace(/</g,'&lt;')}</div>`;
   if (extra?.hits !== undefined) {
     const b = document.createElement('div');
-    b.className = 'hits-badge';
-    b.textContent = `${extra.hits} record${extra.hits!==1?'s':''} retrieved`;
+    b.className = 'hits-badge ' + (isDirect ? 'direct' : 'llm');
+    b.textContent = `${extra.hits} record${extra.hits!==1?'s':''} · ${isDirect?'direct':'via LLM'}`;
     div.appendChild(b);
   }
   if (extra?.debug) {
@@ -359,10 +400,9 @@ function showThinking() {
   document.getElementById('emptyState')?.remove();
   const c  = document.getElementById('messages');
   const el = document.createElement('div');
-  el.className = 'msg bot';
-  el.id = 'thinking';
-  el.innerHTML = `<div class="msg-label">Agent</div>
-    <div class="thinking"><div class="dots"><span></span><span></span><span></span></div>Searching records…</div>`;
+  el.className = 'msg bot'; el.id = 'thinking';
+  el.innerHTML = `<div class="msg-label">${bypassLLM?'Direct':'Agent'}</div>
+    <div class="thinking"><div class="dots"><span></span><span></span><span></span></div>${bypassLLM?'Fetching records…':'Searching records…'}</div>`;
   c.appendChild(el);
   c.scrollTop = c.scrollHeight;
 }
@@ -372,22 +412,22 @@ async function sendMessage() {
   const input = document.getElementById('userInput');
   const query = input.value.trim();
   if (!query) return;
-  input.value = '';
-  input.style.height = 'auto';
+  input.value = ''; input.style.height = 'auto';
 
   appendMsg('user', query);
   showThinking();
   setLoading(true);
 
   try {
-    const res  = await fetch('/chat', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({message: query, debug: debugOn})
+    const endpoint = bypassLLM ? '/chat/direct' : '/chat';
+    const res  = await fetch(endpoint, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({message:query, debug:debugOn})
     });
     const data = await res.json();
     document.getElementById('thinking')?.remove();
-    appendMsg('bot', data.answer, {hits: data.hits, debug: data.debug});
+    appendMsg('bot', data.answer, {hits:data.hits, debug:data.debug, direct:bypassLLM});
     document.getElementById('hitsInfo').textContent = data.hits + ' records';
     document.getElementById('chatTitle').textContent = data.chat_title || 'Chat';
     loadChats();
@@ -399,17 +439,10 @@ async function sendMessage() {
   input.focus();
 }
 
-// ── Textarea auto-resize ──────────────────────────────────
 const inp = document.getElementById('userInput');
-inp.addEventListener('input', () => {
-  inp.style.height = 'auto';
-  inp.style.height = Math.min(inp.scrollHeight, 100) + 'px';
-});
-inp.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-});
+inp.addEventListener('input', () => { inp.style.height='auto'; inp.style.height=Math.min(inp.scrollHeight,100)+'px'; });
+inp.addEventListener('keydown', e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();} });
 
-// ── Init ──────────────────────────────────────────────────
 loadChats();
 loadKbFiles();
 </script>

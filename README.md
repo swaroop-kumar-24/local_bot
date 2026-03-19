@@ -22,18 +22,6 @@ project/
     └── index.html         ← Web UI
 ```
 
-## 🗑 Files You Can Delete
-
-```
-main.py          ← Old terminal chat (replaced by app.py)
-main_json.py     ← Old JSON-only terminal chat (no longer used)
-pdf_to_json.py   ← Old PDF→JSON converter (no longer needed)
-debug_db.py      ← Debug tool (optional to keep)
-debug_json.py    ← Debug tool (optional to keep)
-debug_search.py  ← Debug tool (optional to keep)
-ingest.py        ← Terminal ingestion (PDF upload via UI replaces this)
-```
-
 ---
 
 ## 🚀 Setup (First Time)

@@ -101,7 +101,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);display:gri
 
 /* ── Input ── */
 .input-area{padding:18px 28px;border-top:1px solid var(--border);flex-shrink:0}
-.input-box{display:flex;align-items:flex-end;gap:8px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:11px 14px;transition:border-color .15s}
+.input-box{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:11px 14px;transition:border-color .15s}
+.input-row-top{display:flex;align-items:flex-end;gap:8px;width:100%}
 .input-box:focus-within{border-color:var(--accent2)}
 #userInput{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:var(--serif);font-size:14px;resize:none;max-height:100px;line-height:1.6}
 #userInput::placeholder{color:var(--muted)}
@@ -130,6 +131,56 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);display:gri
 .modal-btn:hover{opacity:.85}
 .modal-btn.cancel{background:var(--s2);border:1px solid var(--border);color:var(--text)}
 .modal-btn.confirm{background:var(--red);color:#fff}
+
+/* ── API Settings Panel ── */
+.api-panel{display:none;position:fixed;inset:0;z-index:200;align-items:center;justify-content:center;background:rgba(0,0,0,.65);backdrop-filter:blur(5px)}
+.api-panel.show{display:flex}
+.api-box{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:28px;width:380px;max-height:80vh;overflow-y:auto}
+.api-box h2{font-size:17px;font-weight:700;margin-bottom:4px}
+.api-box p{font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:20px}
+.api-provider{margin-bottom:16px;padding:14px;background:var(--s2);border:1px solid var(--border);border-radius:10px}
+.api-provider-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.api-provider-icon{font-size:18px}
+.api-provider-name{font-size:13px;font-weight:700}
+.api-provider-model{font-size:10px;color:var(--muted);font-family:var(--mono);margin-left:auto}
+.api-set-badge{font-size:9px;padding:2px 7px;border-radius:10px;font-family:var(--mono)}
+.api-set-badge.set{background:#0d2e0d;border:1px solid #1a4a1a;color:#4ade80}
+.api-set-badge.unset{background:#2a1010;border:1px solid #4a1a1a;color:var(--red)}
+.api-input-row{display:flex;gap:6px}
+.api-key-input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--text);font-family:var(--mono);font-size:11px;outline:none}
+.api-key-input:focus{border-color:var(--accent2)}
+.api-save-btn{padding:8px 12px;background:var(--accent2);color:#fff;border:none;border-radius:7px;font-size:11px;font-family:var(--mono);cursor:pointer;transition:opacity .15s}
+.api-save-btn:hover{opacity:.8}
+.api-clear-btn{padding:8px 10px;background:var(--s1);border:1px solid var(--border);color:var(--red);border-radius:7px;font-size:11px;cursor:pointer}
+.api-close-btn{width:100%;margin-top:8px;padding:10px;background:var(--s2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--serif);font-size:13px;font-weight:600;cursor:pointer}
+
+/* ── Mode selector ── */
+.mode-selector{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.mode-btn{padding:5px 10px;border:1px solid var(--border);border-radius:8px;background:var(--s2);color:var(--muted);font-family:var(--mono);font-size:10px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.mode-btn.active{border-color:var(--accent2);color:var(--text);background:#1a1430}
+.mode-btn.direct.active{border-color:#4ade80;background:#0d1a0d;color:#4ade80}
+.mode-btn.api.active{border-color:var(--accent);background:#1a1500;color:var(--accent)}
+.api-provider-select{padding:5px 8px;border:1px solid var(--border);border-radius:8px;background:var(--s2);color:var(--text);font-family:var(--mono);font-size:10px;cursor:pointer;outline:none;display:none}
+.api-provider-select.show{display:block}
+.api-settings-btn{padding:5px 8px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:12px;cursor:pointer;transition:all .15s;display:none}
+.api-settings-btn.show{display:block}
+.api-settings-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+.topbar-api-btn{padding:6px 12px;background:var(--s2);border:1px solid var(--border);border-radius:20px;color:var(--muted);font-family:var(--mono);font-size:11px;cursor:pointer;transition:all .15s}
+.topbar-api-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+.api-model-row{margin-top:8px}
+.api-model-label{font-size:9px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.api-model-select{width:100%;padding:7px 10px;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:var(--mono);font-size:11px;outline:none;cursor:pointer}
+.api-model-select:focus{border-color:var(--accent2)}
+.api-model-save{margin-top:6px;width:100%;padding:7px;background:var(--s2);border:1px solid var(--border);border-radius:7px;color:var(--muted);font-family:var(--mono);font-size:10px;cursor:pointer;transition:all .15s}
+.api-model-save:hover{border-color:var(--accent2);color:var(--accent2)}
+
+.rate-limit-box{max-width:74%;background:#1a0d00;border:1px solid #4a2500;border-radius:var(--r);padding:14px 18px;font-family:var(--mono);font-size:12px;line-height:1.7}
+.rate-limit-title{color:#f97316;font-weight:700;margin-bottom:8px;font-size:13px}
+.rate-limit-options{color:#fdba74;margin-top:8px}
+.rate-limit-options li{margin:4px 0;list-style:none;padding-left:12px}
+.rate-limit-options li::before{content:"→ ";color:#f97316}
 </style>
 </head>
 <body>
@@ -157,7 +208,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);display:gri
              onerror="this.parentElement.innerHTML='<div class=\'brand-icon-fallback\'>⬡</div>'"/>
       </div>
       <div>
-        <div class="brand-name">RAG Agent</div>
+        <div class="brand-name">Lextria Research</div>
         <div class="brand-sub">{{ model }}</div>
       </div>
     </div>
@@ -169,16 +220,16 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);display:gri
   <div class="sidebar-kb">
     <div class="section-label">Knowledge Base</div>
     <div class="kb-file-list" id="kbFileList"></div>
-    <input type="file" id="kbFileInput" class="kb-upload-input" accept=".json" onchange="uploadKbFile(this)"/>
+    <input type="file" id="kbFileInput" class="kb-upload-input" accept=".pdf" onchange="uploadKbFile(this)"/>
     <div class="kb-add-btn" onclick="document.getElementById('kbFileInput').click()">
-      + Add JSON file
+      + Add PDF
     </div>
   </div>
 
   <div class="status-bar">
     <div class="status-dot" id="statusDot"></div>
     <span id="statusText">Ready</span>
-    <span style="margin-left:auto" id="recordCount">{{ total_records }} records</span>
+    <span style="margin-left:auto" id="recordCount">{{ chunks }} chunks</span>
   </div>
 </aside>
 
@@ -193,6 +244,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);display:gri
       <div class="toggle-pill" id="debugToggle" onclick="toggleDebug()">
         <div class="dot"></div><span>Debug</span>
       </div>
+      <button class="topbar-api-btn" onclick="openApiPanel()" title="Manage API keys">🔑 API Keys</button>
       <div class="record-badge" id="hitsInfo">— records</div>
     </div>
   </div>
@@ -207,21 +259,29 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);display:gri
 
   <div class="input-area">
     <div class="input-box">
-      <textarea id="userInput" rows="1" placeholder="Ask anything — e.g. AR76…"></textarea>
-      <!-- Bypass LLM toggle inside the input box -->
-      <div class="bypass-toggle" id="bypassToggle" onclick="toggleBypass()" title="Bypass LLM — return raw records instantly">
-        <div class="bdot"></div>
-        <span id="bypassLabel">LLM</span>
+      <div class="input-row-top">
+        <textarea id="userInput" rows="1" placeholder="Ask anything — e.g. AR76…"></textarea>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()">▶</button>
       </div>
-      <button class="send-btn" id="sendBtn" onclick="sendMessage()">▶</button>
+      <div class="mode-selector" style="width:100%;padding-top:4px;border-top:1px solid var(--border);margin-top:4px">
+        <button class="mode-btn active" id="modeLLM"    onclick="setMode('llm')"    title="Local Ollama LLM">⚙ LLM</button>
+        <button class="mode-btn direct" id="modeDirect" onclick="setMode('direct')" title="Direct JSON lookup">⚡ Direct</button>
+        <button class="mode-btn api"    id="modeAPI"    onclick="setMode('api')"    title="External API">☁ API</button>
+        <select class="api-provider-select" id="providerSelect" style="display:none">
+          <option value="groq">⚡ Groq (Free)</option>
+          <option value="claude">◆ Claude</option>
+          <option value="gemini">✦ Gemini</option>
+          <option value="openai">⬡ OpenAI</option>
+        </select>
+      </div>
     </div>
-    <div class="input-hint">Enter to send · Shift+Enter for new line · <span id="modeHint">LLM mode</span></div>
+    <div class="input-hint">Enter to send · Shift+Enter for new line · <span id="modeHint">Local LLM mode</span></div>
   </div>
 </main>
 
 <script>
-let debugOn   = false;
-let bypassLLM = false;
+let debugOn      = false;
+let currentMode  = 'llm';   // 'llm' | 'direct' | 'api'
 let activeCid = null;
 
 // ── Modal ─────────────────────────────────────────────────
@@ -251,20 +311,112 @@ function toggleDebug() {
   document.getElementById('debugToggle').classList.toggle('on', debugOn);
 }
 
-function toggleBypass() {
-  bypassLLM = !bypassLLM;
-  const el  = document.getElementById('bypassToggle');
-  const lbl = document.getElementById('bypassLabel');
-  const hint = document.getElementById('modeHint');
-  el.classList.toggle('on', bypassLLM);
-  lbl.textContent  = bypassLLM ? 'Direct' : 'LLM';
-  hint.textContent = bypassLLM ? 'Direct mode — raw records, no LLM' : 'LLM mode';
+function setMode(mode) {
+  currentMode = mode;
+  const idMap = {llm:'modeLLM', direct:'modeDirect', api:'modeAPI'};
+  ['llm','direct','api'].forEach(m => {
+    const el = document.getElementById(idMap[m]);
+    if (el) el.classList.toggle('active', m === mode);
+  });
+  // Show provider dropdown only in API mode
+  const ps = document.getElementById('providerSelect');
+  if (ps) ps.style.display = (mode === 'api') ? 'block' : 'none';
+  const hints = {
+    llm:    'Local LLM mode (Ollama)',
+    direct: 'Direct mode — raw records, no LLM',
+    api:    'API mode — click 🔑 API Keys in toolbar to add keys'
+  };
+  document.getElementById('modeHint').textContent = hints[mode];
+  // Auto-open API panel when switching to API mode so user sees keys prompt
+  if (mode === 'api') openApiPanel();
+}
+
+// ── API Panel ─────────────────────────────────────────────
+async function openApiPanel() {
+  let data;
+  try {
+    data = await (await fetch('/apikeys')).json();
+  } catch(e) {
+    alert('Could not load API key settings: ' + e);
+    return;
+  }
+  const list = document.getElementById('apiProviderList');
+  list.innerHTML = '';
+  for (const [provider, info] of Object.entries(data)) {
+    const p = info.info; const isSet = info.set;
+    const selectedModel = info.selected_model || p.default_model;
+    const models = p.models || [];
+
+    // Build model options
+    const modelOptions = models.map(m =>
+      `<option value="${m.id}" ${m.id === selectedModel ? 'selected' : ''}>${m.label}</option>`
+    ).join('');
+
+    const div = document.createElement('div');
+    div.className = 'api-provider';
+    div.innerHTML = `
+      <div class="api-provider-head">
+        <span class="api-provider-icon">${p.icon||'?'}</span>
+        <span class="api-provider-name">${p.name}</span>
+        <span class="api-set-badge ${isSet?'set':'unset'}" id="badge_${provider}">${isSet?'✓ Key Set':'No Key'}</span>
+      </div>
+
+      <div class="api-input-row">
+        <input class="api-key-input" type="password" id="key_${provider}"
+               placeholder="${isSet ? '••••••••••••  (key saved)' : 'Paste API key…'}"/>
+        <button class="api-save-btn" onclick="saveKey('${provider}')">Save</button>
+        ${isSet ? `<button class="api-clear-btn" onclick="clearKey('${provider}')">✕</button>` : ''}
+      </div>
+
+      <div class="api-model-row">
+        <div class="api-model-label">Model</div>
+        <select class="api-model-select" id="model_${provider}" onchange="saveModel('${provider}')">
+          ${modelOptions}
+        </select>
+      </div>`;
+    list.appendChild(div);
+  }
+  document.getElementById('apiPanel').classList.add('show');
+}
+
+function closeApiPanel() {
+  document.getElementById('apiPanel').classList.remove('show');
+}
+
+async function saveKey(provider) {
+  const key = document.getElementById('key_'+provider).value.trim();
+  if (!key) { alert('Please enter an API key'); return; }
+  const res = await fetch('/apikeys/'+provider, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({key})
+  });
+  const data = await res.json();
+  if (data.error) { alert(data.error); return; }
+  document.getElementById('badge_'+provider).className = 'api-set-badge set';
+  document.getElementById('badge_'+provider).textContent = 'Key Set';
+  document.getElementById('key_'+provider).value = '';
+}
+
+async function clearKey(provider) {
+  await fetch('/apikeys/'+provider, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({key:''})
+  });
+  openApiPanel();
+}
+
+async function saveModel(provider) {
+  const model = document.getElementById('model_'+provider).value;
+  await fetch('/apikeys/'+provider, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({model})   // save model without changing key
+  });
 }
 
 // ── Status ────────────────────────────────────────────────
 function setLoading(on) {
   document.getElementById('statusDot').className    = 'status-dot' + (on ? ' busy' : '');
-  document.getElementById('statusText').textContent = on ? (bypassLLM ? 'Searching…' : 'Thinking…') : 'Ready';
+  document.getElementById('statusText').textContent = on ? (currentMode==='direct' ? 'Searching…' : currentMode==='api' ? 'Calling API…' : 'Thinking…') : 'Ready';
   document.getElementById('sendBtn').disabled = on;
 }
 
@@ -295,29 +447,43 @@ async function loadKbFiles() {
   const list  = document.getElementById('kbFileList');
   list.innerHTML = '';
   if (!files.length) {
-    list.innerHTML = '<div style="font-size:11px;color:var(--muted);font-family:var(--mono)">No files loaded</div>';
+    list.innerHTML = '<div style="font-size:11px;color:var(--muted);font-family:var(--mono)">No PDFs — upload to get started</div>';
     return;
   }
+  let total = 0;
   files.forEach(f => {
     const div = document.createElement('div');
     div.className = 'kb-file';
     div.innerHTML = `
-      <span class="kb-file-name" title="${f.name}">${f.name}</span>
-      <span class="kb-file-count">${f.records}r</span>
+      <span class="kb-file-name" title="${f.name}">📄 ${f.name}</span>
+      <span class="kb-file-count">${f.chunks} chunks</span>
       <button class="kb-file-del" title="Delete" onclick="deleteKbFile('${f.name}')">✕</button>`;
     list.appendChild(div);
+    total += f.chunks || 0;
   });
-  document.getElementById('recordCount').textContent =
-    files.reduce((s,f) => s+f.records, 0) + ' records';
+  document.getElementById('recordCount').textContent = total + ' chunks';
 }
 
 async function uploadKbFile(input) {
   const file = input.files[0]; if (!file) return;
-  const fd   = new FormData(); fd.append('file', file);
-  const data = await (await fetch('/kb/upload', {method:'POST', body:fd})).json();
-  if (data.error) { alert(data.error); return; }
-  input.value = '';
-  loadKbFiles();
+  const addBtn   = document.querySelector('.kb-add-btn');
+  const origText = addBtn.textContent;
+  addBtn.textContent = '⬡ Embedding PDF…';
+  addBtn.style.borderColor = 'var(--accent2)';
+  const fd = new FormData(); fd.append('file', file);
+  try {
+    const res  = await fetch('/kb/upload', {method:'POST', body:fd});
+    const data = await res.json();
+    if (data.error) { alert('Upload error: ' + data.error); return; }
+    console.log(`[OK] ${data.name} — ${data.chunks} chunks embedded`);
+  } catch(e) {
+    alert('Upload failed: ' + e);
+  } finally {
+    input.value = '';
+    addBtn.textContent = origText;
+    addBtn.style.borderColor = '';
+    loadKbFiles();
+  }
 }
 
 async function deleteKbFile(name) {
@@ -378,12 +544,17 @@ function appendMsg(role, text, extra) {
   div.className = `msg ${role}`;
   const isDirect = extra?.direct;
   div.innerHTML = `
-    <div class="msg-label">${role==='user' ? 'You' : (isDirect ? 'Direct' : 'Agent')}</div>
+    <div class="msg-label">${role==='user' ? 'You' : (isDirect ? 'Direct' : (extra?.apiProvider ? extra.apiProvider.toUpperCase() : 'Agent'))}</div>
     <div class="msg-bubble${isDirect ? ' direct-bubble' : ''}">${text.replace(/</g,'&lt;')}</div>`;
-  if (extra?.hits !== undefined) {
+  if (extra?.sources !== undefined) {
     const b = document.createElement('div');
-    b.className = 'hits-badge ' + (isDirect ? 'direct' : 'llm');
-    b.textContent = `${extra.hits} record${extra.hits!==1?'s':''} · ${isDirect?'direct':'via LLM'}`;
+    let mode = 'llm';
+    if (isDirect) mode = 'direct';
+    else if (extra.apiProvider) mode = 'api';
+    b.className = 'hits-badge ' + mode;
+    const srcLabel = (extra.sources||[]).join(' + ') || 'none';
+    const modeLabel = isDirect ? 'direct' : (extra.apiProvider ? extra.apiProvider.toUpperCase() : 'LLM');
+    b.textContent = srcLabel + ' · ' + modeLabel;
     div.appendChild(b);
   }
   if (extra?.debug) {
@@ -401,8 +572,8 @@ function showThinking() {
   const c  = document.getElementById('messages');
   const el = document.createElement('div');
   el.className = 'msg bot'; el.id = 'thinking';
-  el.innerHTML = `<div class="msg-label">${bypassLLM?'Direct':'Agent'}</div>
-    <div class="thinking"><div class="dots"><span></span><span></span><span></span></div>${bypassLLM?'Fetching records…':'Searching records…'}</div>`;
+  el.innerHTML = `<div class="msg-label">${currentMode==='direct'?'Direct':currentMode==='api'?document.getElementById('providerSelect').value.toUpperCase():'Agent'}</div>
+    <div class="thinking"><div class="dots"><span></span><span></span><span></span></div>${currentMode==='direct'?'Fetching records…':currentMode==='api'?'Asking API…':'Searching records…'}</div>`;
   c.appendChild(el);
   c.scrollTop = c.scrollHeight;
 }
@@ -419,21 +590,45 @@ async function sendMessage() {
   setLoading(true);
 
   try {
-    const endpoint = bypassLLM ? '/chat/direct' : '/chat';
+    let endpoint, body;
+
+    if (currentMode === 'direct') {
+      endpoint = '/chat/direct';
+      body     = {message: query};
+    } else if (currentMode === 'api') {
+      const provider = document.getElementById('providerSelect').value;
+      endpoint = '/chat/api';
+      body     = {message: query, provider};
+    } else {
+      endpoint = '/chat';
+      body     = {message: query, debug: debugOn};
+    }
+
     const res  = await fetch(endpoint, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({message:query, debug:debugOn})
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(body)
     });
     const data = await res.json();
     document.getElementById('thinking')?.remove();
-    appendMsg('bot', data.answer, {hits:data.hits, debug:data.debug, direct:bypassLLM});
-    document.getElementById('hitsInfo').textContent = data.hits + ' records';
-    document.getElementById('chatTitle').textContent = data.chat_title || 'Chat';
-    loadChats();
+
+    if (data.error) {
+      const isRateLimit = data.error.includes('RATE_LIMIT') || data.error.includes('quota');
+      appendMsg('bot', isRateLimit ? data.error : '⚠ ' + data.error);
+    } else {
+      const isDirect  = currentMode === 'direct';
+      const isApi     = currentMode === 'api';
+      const provider  = data.provider || null;
+      appendMsg('bot', data.answer, {
+        hits: data.hits, debug: data.debug,
+        direct: isDirect, apiProvider: provider
+      });
+      document.getElementById('hitsInfo').textContent = data.hits + ' records';
+      document.getElementById('chatTitle').textContent = data.chat_title || 'Chat';
+      loadChats();
+    }
   } catch(e) {
     document.getElementById('thinking')?.remove();
-    appendMsg('bot', '⚠ Server error. Is Ollama running?');
+    appendMsg('bot', '⚠ Server error.');
   }
   setLoading(false);
   input.focus();
@@ -446,5 +641,15 @@ inp.addEventListener('keydown', e => { if(e.key==='Enter'&&!e.shiftKey){e.preven
 loadChats();
 loadKbFiles();
 </script>
+
+<!-- ── API Settings Panel ──────────────────────────────── -->
+<div class="api-panel" id="apiPanel">
+  <div class="api-box">
+    <h2>🔑 API Providers</h2>
+    <p>Keys are stored in memory only — cleared on server restart.</p>
+    <div id="apiProviderList"></div>
+    <button class="api-close-btn" onclick="closeApiPanel()">Close</button>
+  </div>
+</div>
 </body>
 </html>

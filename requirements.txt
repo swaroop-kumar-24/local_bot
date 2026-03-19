@@ -13,3 +13,6 @@ pdfplumber
 docx2txt
 unstructured
 python-dotenv
+anthropic
+google-generativeai
+openai

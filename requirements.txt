@@ -16,3 +16,6 @@ python-dotenv
 anthropic
 google-generativeai
 openai
+pytesseract
+Pillow
+pdf2image

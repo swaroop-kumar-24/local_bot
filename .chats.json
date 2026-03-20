@@ -1,0 +1,12 @@
+{
+  "859e747b": {
+    "title": "in Application\nAwaiting\nexamination…",
+    "history": [
+      [
+        "in Application\nAwaiting\nexamination, after filed step , which step comes next",
+        "After the \"Application\" is filed and is in the \"Awaiting examination\" stage, the next step would be to wait for the \"First Examination Report (FER)\" notice. According to the document [PATENT SOP - Lextria Research.pdf p.4], the status of the FER notice should be checked every Friday. If the FER notice is received, it will be assigned to the respective drafter for drafting of the FER response. \n\nSo, the sequence of steps after filing would be:\n1. Application filed\n2. Awaiting examination\n3. Status check for FER notice (every Friday)\n4. Assignment of FER notice to drafter for response drafting (if FER notice is received)\n\nPlease refer to [PATENT SOP - Lextria Research.pdf p.4] for more information."
+      ]
+    ],
+    "created": "11:59"
+  }
+}

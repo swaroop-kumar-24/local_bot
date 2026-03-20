@@ -23,7 +23,8 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from api_providers import PROVIDERS, PROVIDER_INFO
 
 # ── Persistent API key storage ────────────────────────────────────────────────
-KEYS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".api_keys.json")
+KEYS_FILE  = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".api_keys.json")
+CHATS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".chats.json")
 
 def load_api_keys():
     """Load saved API keys and model selections from disk."""
@@ -43,6 +44,24 @@ def save_api_keys(keys: dict, models: dict):
             json.dump({"keys": keys, "models": models}, f, indent=2)
     except Exception as e:
         print(f"[WARN] Could not save API keys: {e}")
+
+# ── Persistent chat storage ───────────────────────────────────────────────────
+def load_chats() -> dict:
+    if os.path.exists(CHATS_FILE):
+        try:
+            with open(CHATS_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+def save_chats():
+    try:
+        with open(CHATS_FILE, "w", encoding="utf-8") as f:
+            json.dump(_chats, f, indent=2, ensure_ascii=False)
+    except Exception as e:
+        print(f"[WARN] Could not save chats: {e}")
+
 
 # ── Auto-start Ollama ─────────────────────────────────────────────────────────
 def ensure_ollama_running():
@@ -148,19 +167,107 @@ def get_vs():
             print(f"[ERROR] Vector store: {e}")
     return _vector_store
 
+def _ocr_available() -> bool:
+    """Check if Tesseract OCR is installed on this system."""
+    try:
+        import pytesseract
+        pytesseract.get_tesseract_version()
+        return True
+    except Exception:
+        return False
+
+
+def _extract_images_from_page(page, page_num: int, source_name: str) -> list:
+    """
+    Extract images from a pdfplumber page and run OCR on each.
+    Returns list of Document objects with OCR text.
+    """
+    docs = []
+    try:
+        import pytesseract
+        from PIL import Image
+        import io
+
+        for img_idx, img in enumerate(page.images):
+            try:
+                # Get image bytes from the page
+                x0, top, x1, bottom = img["x0"], img["top"], img["x1"], img["bottom"]
+                # Crop the image region from the page as a PIL image
+                cropped = page.within_bbox((x0, top, x1, bottom)).to_image(resolution=100)
+                pil_img = cropped.original
+
+                # Run OCR
+                ocr_text = pytesseract.image_to_string(pil_img, lang="eng").strip()
+                if ocr_text and len(ocr_text) > 20:   # skip noise
+                    docs.append(Document(
+                        page_content="[Image OCR text]\n" + ocr_text,
+                        metadata={"source": source_name, "page": page_num,
+                                  "type": "image_ocr", "image_index": img_idx}
+                    ))
+            except Exception as e:
+                print(f"[WARN] OCR failed for image {img_idx} on page {page_num}: {e}")
+    except ImportError:
+        pass
+    return docs
+
+
 def embed_pdf(path: str, source_name: str) -> int:
+    """
+    Extract text and images from a PDF and embed into ChromaDB.
+    - Text pages: extracted via pdfplumber
+    - Image-only pages (scanned): OCR via pytesseract if installed
+    - Embedded images: OCR extracted separately
+    """
     import pdfplumber
+    use_ocr = _ocr_available()
+    if use_ocr:
+        print(f"[INFO] OCR enabled — will extract text from images in {source_name}")
+    else:
+        print(f"[INFO] OCR not available — install Tesseract for image text extraction")
+
     pages = []
     with pdfplumber.open(path) as pdf:
         for i, page in enumerate(pdf.pages):
+            page_num = i + 1
             text = page.extract_text()
+
             if text and text.strip():
+                # Normal text page
                 pages.append(Document(
                     page_content=text.strip(),
-                    metadata={"source": source_name, "page": i + 1}
+                    metadata={"source": source_name, "page": page_num, "type": "text"}
                 ))
+                # Also extract any embedded images on this page
+                if use_ocr and page.images:
+                    pages.extend(_extract_images_from_page(page, page_num, source_name))
+
+            else:
+                # No text found — likely a scanned/image page
+                if use_ocr:
+                    print(f"[INFO] Page {page_num} has no text — running OCR...")
+                    try:
+                        import pytesseract
+                        # Render full page as image and OCR it
+                        page_img = page.to_image(resolution=200)
+                        pil_img  = page_img.original
+                        ocr_text = pytesseract.image_to_string(pil_img, lang="eng").strip()
+                        if ocr_text and len(ocr_text) > 20:
+                            pages.append(Document(
+                                page_content="[Scanned page OCR]\n" + ocr_text,
+                                metadata={"source": source_name, "page": page_num,
+                                          "type": "scanned_ocr"}
+                            ))
+                            print(f"[OK] OCR extracted {len(ocr_text)} chars from page {page_num}")
+                        else:
+                            print(f"[WARN] OCR found no readable text on page {page_num}")
+                    except Exception as e:
+                        print(f"[WARN] OCR failed on page {page_num}: {e}")
+                else:
+                    print(f"[WARN] Page {page_num} has no text and OCR is not available.")
+
     if not pages:
         return 0
+
     splitter = RecursiveCharacterTextSplitter(chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP)
     chunks   = splitter.split_documents(pages)
     global _vector_store
@@ -226,7 +333,7 @@ def enrich(query, history):
     return query
 
 # ── Session ───────────────────────────────────────────────────────────────────
-_chats: dict     = {}
+_chats: dict     = load_chats()
 _api_keys, _api_models = load_api_keys()
 if _api_keys:
     print(f"[INFO] Loaded saved API keys for: {', '.join(_api_keys.keys())}")
@@ -235,13 +342,18 @@ def new_chat():
     cid = str(uuid.uuid4())[:8]
     _chats[cid] = {"title": f"Chat {len(_chats)+1}",
                    "history": [], "created": datetime.now().strftime("%H:%M")}
+    save_chats()
     return cid
 
 # ── Routes ────────────────────────────────────────────────────────────────────
 @app.route("/")
 def index():
     if "active_chat" not in session or session["active_chat"] not in _chats:
-        session["active_chat"] = new_chat()
+        # Restore last chat from saved chats, or create new one
+        if _chats:
+            session["active_chat"] = list(_chats.keys())[-1]
+        else:
+            session["active_chat"] = new_chat()
     vs = get_vs()
     chunks = vs._collection.count() if vs else 0
     # list PDF source files
@@ -323,6 +435,7 @@ def _finish(chat_id, query, answer, sources, extra=None):
         _chats[chat_id]["history"] = h[-MAX_HISTORY:]
     if len(h) == 1:
         _chats[chat_id]["title"] = query[:35] + ("…" if len(query) > 35 else "")
+    save_chats()
     resp = {"answer": answer, "sources": sources, "chat_title": _chats[chat_id]["title"]}
     if extra: resp.update(extra)
     return jsonify(resp)
@@ -407,6 +520,7 @@ def delete_chat(cid):
     if cid in _chats: del _chats[cid]
     if session.get("active_chat") == cid:
         session["active_chat"] = list(_chats.keys())[-1] if _chats else new_chat()
+    save_chats()
     return jsonify({"status": "ok", "active": session["active_chat"]})
 
 # ── API keys ──────────────────────────────────────────────────────────────────

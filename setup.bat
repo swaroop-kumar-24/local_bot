@@ -35,7 +35,7 @@ echo [OK] Virtual environment ready.
 :: Install requirements
 echo [INFO] Installing Python packages (this may take a few minutes)...
 call venv\Scripts\activate.bat
-pip install -r requirements.txt --quiet
+pip install -r requirements.txt 
 echo [OK] Packages installed.
 
 :: Pull Ollama models
@@ -59,8 +59,9 @@ echo.
 echo  ╔══════════════════════════════════════════╗
 echo  ║         Setup Complete!                  ║
 echo  ║                                          ║
-echo  ║  Double-click "RAG Agent" on Desktop     ║
-echo  ║  or run: python app.py                   ║
+echo  ║  ▶ Launch:  "RAG Agent" on Desktop       ║
+echo  ║  ↻ Update:  "RAG Agent - Update"         ║
+echo  ║  or run:    python app.py                ║
 echo  ╚══════════════════════════════════════════╝
 echo.
 pause
